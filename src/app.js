@@ -13,7 +13,16 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/users", async function (req, res) {
-	res.send(await User.find({}));
+	try {
+		if (Object.keys(req.query).length === 0) res.send(await User.find({}));
+		const { category, term } = req.query;
+		const regexp = new RegExp("^" + term);
+		const filter = {};
+		filter[category] = regexp;
+		res.send(await User.find(filter));
+	} catch (e) {
+		res.status(500).send();
+	}
 });
 
 app.post("/users/delete", async function (req, res) {
@@ -24,7 +33,7 @@ app.post("/users/delete", async function (req, res) {
 		});
 		res.send({ msg: "users deleted" });
 	} catch (e) {
-		res.send({ msg: e.message });
+		res.status(500).send();
 	}
 });
 
