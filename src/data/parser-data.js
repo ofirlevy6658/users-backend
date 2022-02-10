@@ -1,8 +1,5 @@
-const rawData = require("./raw-data");
-
-const parser = (text) => {
+module.exports = (text) => {
 	const textArr = text.replaceAll("\n", ",").replaceAll('"', "").split(",");
-	console.log(textArr);
 	const result = [];
 	for (let i = 0; i < textArr.length; i += 4) {
 		result.push({
