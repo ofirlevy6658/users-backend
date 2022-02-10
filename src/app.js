@@ -16,12 +16,12 @@ app.get("/users", async function (req, res) {
 	try {
 		if (Object.keys(req.query).length === 0) res.send(await User.find({}));
 		const { category, term } = req.query;
-		const regexp = new RegExp("^" + term);
 		const filter = {};
-		filter[category] = regexp;
-		res.send(await User.find(filter));
+		filter[category] = { $regex: term, $options: "i" };
+		return res.send(await User.find(filter));
 	} catch (e) {
-		res.status(500).send();
+		console.log(e.message);
+		return res.status(500).send();
 	}
 });
 
