@@ -3,6 +3,7 @@ const cors = require("cors");
 
 require("./db/mongo");
 const User = require("./db/model/User");
+const userValidator = require("./validate-user");
 
 // #insert 50 users to db
 // const insertData = require("./data/insert-data");
@@ -20,11 +21,20 @@ app.get("/users", async function (req, res) {
 		filter[category] = { $regex: term, $options: "i" };
 		return res.send(await User.find(filter));
 	} catch (e) {
-		console.log(e.message);
 		return res.status(500).send();
 	}
 });
 
+app.post("/users", async function (req, res) {
+	try {
+		const { user } = req.body;
+		if (!userValidator(user)) return res.send({ msg: "bad credentials" });
+		await new User(user).save();
+		res.send({ msg: "user added" });
+	} catch (e) {
+		res.status(500).send();
+	}
+});
 app.post("/users/delete", async function (req, res) {
 	try {
 		const { ids } = req.body;
