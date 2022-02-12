@@ -3,7 +3,7 @@ const cors = require("cors");
 
 require("./db/mongo");
 const User = require("./db/model/User");
-const userValidator = require("./validate-user");
+const userValidator = require("./utils/validate-user");
 
 // #insert 50 users to db
 // const insertData = require("./data/insert-data");

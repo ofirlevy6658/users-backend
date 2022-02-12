@@ -10,6 +10,5 @@ module.exports = (user) => {
 	) {
 		return false;
 	}
-	console.log("true");
 	return true;
 };
